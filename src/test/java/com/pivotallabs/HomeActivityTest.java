@@ -21,20 +21,37 @@ import static org.junit.Assert.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
 public class HomeActivityTest {
-    private HomeActivity activity;
+    private HomeActivity homeActivity;
     private Button pressMeButton;
     private Button trackerRecentActivityButton;
     private Button injectedActivityButton;
     private ImageView pivotalLogo;
+    private Button aboutUsButton;
 
     @Before
     public void setUp() throws Exception {
-        activity = new HomeActivity();
-        activity.onCreate(null);
-        pressMeButton = (Button) activity.findViewById(R.id.press_me_button);
-        trackerRecentActivityButton = (Button) activity.findViewById(R.id.tracker_recent_activity);
-        injectedActivityButton = (Button) activity.findViewById(R.id.injected_activity_button);
-        pivotalLogo = (ImageView) activity.findViewById(R.id.pivotal_logo);
+        homeActivity = new HomeActivity();
+        homeActivity.onCreate(null);
+        pressMeButton = (Button) homeActivity.findViewById(R.id.press_me_button);
+        trackerRecentActivityButton = (Button) homeActivity.findViewById(R.id.tracker_recent_activity);
+        injectedActivityButton = (Button) homeActivity.findViewById(R.id.injected_activity_button);
+        pivotalLogo = (ImageView) homeActivity.findViewById(R.id.pivotal_logo);
+        aboutUsButton = (Button) homeActivity.findViewById(R.id.about_us_button);
+    }
+
+    @Test
+    public void shouldHaveAButtonThatSaysAboutUs() throws Exception {
+        assertThat(((String) aboutUsButton.getText()), equalTo("About Us"));
+    }
+
+
+    @Test
+    public void pressingTheButtonShouldStartTheAboutUsActivity() throws Exception {
+        aboutUsButton.performClick();
+
+        Intent aboutUsActivity = shadowOf(homeActivity).getNextStartedActivity();
+        ShadowIntent shadowIntent = shadowOf(aboutUsActivity);
+        assertThat(shadowIntent.getComponent().getClassName(), equalTo(AboutUsActivity.class.getName()));
     }
 
     @Test
@@ -46,7 +63,7 @@ public class HomeActivityTest {
     public void pressingTheButtonShouldStartTheListActivity() throws Exception {
         pressMeButton.performClick();
 
-        ShadowActivity shadowActivity = shadowOf(activity);
+        ShadowActivity shadowActivity = shadowOf(homeActivity);
         Intent startedIntent = shadowActivity.getNextStartedActivity();
         ShadowIntent shadowIntent = shadowOf(startedIntent);
         assertThat(shadowIntent.getComponent().getClassName(), equalTo(NamesActivity.class.getName()));
@@ -56,7 +73,7 @@ public class HomeActivityTest {
     public void pressingTheButtonShouldStartTheSignInActivity() throws Exception {
         trackerRecentActivityButton.performClick();
 
-        ShadowActivity shadowActivity = shadowOf(activity);
+        ShadowActivity shadowActivity = shadowOf(homeActivity);
         Intent startedIntent = shadowActivity.getNextStartedActivity();
         ShadowIntent shadowIntent = shadowOf(startedIntent);
 
@@ -73,7 +90,7 @@ public class HomeActivityTest {
     public void shouldLaunchInjectedActivity() throws Exception {
         clickOn(injectedActivityButton);
 
-        ShadowActivity shadowActivity = shadowOf(activity);
+        ShadowActivity shadowActivity = shadowOf(homeActivity);
         Intent startedIntent = shadowActivity.getNextStartedActivity();
         assertNotNull(startedIntent);
         ShadowIntent shadowIntent = shadowOf(startedIntent);

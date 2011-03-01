@@ -22,6 +22,12 @@ public class HomeActivity extends Activity {
             }
         });
 
+        findViewById(R.id.about_us_button).setOnClickListener(new View.OnClickListener(){
+            @Override public void onClick(View view) {
+                startActivity(AboutUsActivity.class);
+            }
+        });
+
         findViewById(R.id.tracker_recent_activity).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
