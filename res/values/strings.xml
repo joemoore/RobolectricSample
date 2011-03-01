@@ -13,4 +13,5 @@
     <string name="injected_activity">Roboguice Injected Activity</string>
     <string name="injected_activity_caption">Roboguice Activity tested with Robolectric</string>
     <string name="about_us">About Us</string>
+    <string name="about_us_text">Robolectric is a TDD framework for Andorid. Use it!</string>
 </resources>
