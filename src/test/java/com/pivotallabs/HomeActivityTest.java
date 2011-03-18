@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import com.pivotallabs.injected.InjectedActivity;
+import com.pivotallabs.tracker.MostRecentTweetActivity;
 import com.pivotallabs.tracker.RecentActivityActivity;
 import com.xtremelabs.robolectric.RobolectricTestRunner;
 import com.xtremelabs.robolectric.shadows.ShadowActivity;
@@ -40,10 +41,19 @@ public class HomeActivityTest {
     }
 
     @Test
+    public void pressingLastTweetButtonShouldStartLastTweetActivity() throws Exception {
+        Button mostRecentTweetButton = (Button) homeActivity.findViewById(R.id.most_recent_tweet_button);
+        mostRecentTweetButton.performClick();
+
+        Intent startedActivity = shadowOf(homeActivity).getNextStartedActivity();
+        ShadowIntent shadowIntent = shadowOf(startedActivity);
+        assertThat(shadowIntent.getComponent().getClassName(), equalTo(MostRecentTweetActivity.class.getName()));
+    }
+
+    @Test
     public void shouldHaveAButtonThatSaysAboutUs() throws Exception {
         assertThat(((String) aboutUsButton.getText()), equalTo("About Us"));
     }
-
 
     @Test
     public void pressingTheButtonShouldStartTheAboutUsActivity() throws Exception {

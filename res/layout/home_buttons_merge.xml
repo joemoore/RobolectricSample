@@ -18,6 +18,14 @@
             />
 
     <Button
+            android:id="@+id/most_recent_tweet_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Most Recent Tweet"
+            android:layout_marginBottom="10dip"
+            />
+
+    <Button
             android:id="@+id/tracker_recent_activity"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

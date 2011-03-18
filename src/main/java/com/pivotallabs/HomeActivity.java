@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import com.pivotallabs.injected.InjectedActivity;
+import com.pivotallabs.tracker.MostRecentTweetActivity;
 import com.pivotallabs.tracker.RecentActivityActivity;
 
 public class HomeActivity extends Activity {
@@ -19,6 +20,12 @@ public class HomeActivity extends Activity {
             @Override
             public void onClick(View view) {
                 startActivity(NamesActivity.class);
+            }
+        });
+
+        findViewById(R.id.most_recent_tweet_button).setOnClickListener(new View.OnClickListener(){
+            @Override public void onClick(View view) {
+                startActivity(MostRecentTweetActivity.class);
             }
         });
 
