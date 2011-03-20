@@ -1,10 +1,10 @@
 package com.pivotallabs.tracker;
 
-import com.sun.deploy.net.HttpResponse;
+import android.widget.TextView;
+import com.pivotallabs.R;
+import com.pivotallabs.TestResponses;
 import com.xtremelabs.robolectric.Robolectric;
 import com.xtremelabs.robolectric.RobolectricTestRunner;
-import org.apache.http.HttpRequest;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,26 +12,29 @@ import org.junit.runner.RunWith;
 
 import java.net.URI;
 
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
 public class MostRecentTweetActivityTest {
+    private MostRecentTweetActivity mostRecentTweetActivity;
+    private HttpUriRequest sentHttpRequest;
+
     @Before
     public void setUp() throws Exception {
-
+        Robolectric.addPendingHttpResponse(200, TestResponses.LATEST_TWEET);
+        mostRecentTweetActivity = new MostRecentTweetActivity();
+        mostRecentTweetActivity.onCreate(null);
     }
 
     @Test
     public void shouldFetchLatestRobolectricTweetWhenStarted() {
-        MostRecentTweetActivity mostRecentTweetActivity = new MostRecentTweetActivity();
-        Robolectric.addPendingHttpResponse(200, "monkey!");
-        mostRecentTweetActivity.onCreate(null);
+        sentHttpRequest = (HttpUriRequest) Robolectric.getSentHttpRequest(0);
+        assertEquals(URI.create("http://search.twitter.com/search.atom?q=robolectric&rpp=1"), sentHttpRequest.getURI());
+    }
 
-        HttpUriRequest sentHttpRequest = (HttpUriRequest) Robolectric.getSentHttpRequest(0);
-        assertEquals(URI.create("http://search.twitter.com/search.atom"), sentHttpRequest.getURI());
-        assertEquals("robolectric", sentHttpRequest.getParams().getParameter("q"));
-        assertEquals("1", sentHttpRequest.getParams().getParameter("rpp"));
+    @Test
+    public void shouldDisplayLastTweetText() {
+        TextView tweetTest = (TextView) mostRecentTweetActivity.findViewById(R.id.tweet_text);
+        assertEquals("Robolectric is Great!", tweetTest.getText());
     }
 }
