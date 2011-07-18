@@ -4,7 +4,9 @@ out/
 aidls/gen/
 code/gen/
 IntegrationTests/gen/
+.idea
 .idea/*
+.idea/**
 *.ipr
 *.iws
 *.iml
